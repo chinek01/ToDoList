@@ -27,6 +27,15 @@
 <br><br>
 
 <div class="container">
+    <p>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages  %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </p>
 
     <p>
         {{ wtf.quick_form(form) }}
