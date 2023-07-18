@@ -1,3 +1,7 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
 {% include "header.html" %}
 
 <div class="top_row">
@@ -22,5 +26,14 @@
 </div>
 <br><br>
 
+<div class="container">
+
+    <p>
+        {{ wtf.quick_form(form) }}
+    </p>
+
+</div>
+
 
 {% include "footer.html" %}
+{% endblock %}

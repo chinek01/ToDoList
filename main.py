@@ -8,8 +8,9 @@ Author: MC
 
 """
 
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, flash, redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_ckeditor import CKEditor
 from sqlalchemy.orm import relationship
 from flask_bootstrap import Bootstrap
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -19,15 +20,27 @@ from wtforms.validators import DataRequired
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 
 
+from Forms.Forms import *
+
 # Flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+ckeditor = CKEditor(app)
 Bootstrap(app)
 
 # Connect to Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+# login manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
 
 
 class Users(UserMixin, db.Model):
@@ -68,9 +81,72 @@ def home():
     return render_template("home.html")
 
 
-@app.route('/login')
+@app.route('/login', methods=['POST', 'GET'])
 def login():
-    return render_template('login.html')
+    form = LoginForm()
+
+    if form.validate_on_submit():
+
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        user = Users.query.filter_by(email=email).first()
+
+        # if not user:
+        #     flash("Tha")
+        if not user:
+            flash("That email does not exist, pleas try again. ")
+            return redirect(url_for('register'))
+        elif not check_password_hash(user.password, password):
+            flash('Password incorrect, pleas try again.')
+            return redirect(url_for('login'))
+        else:
+            login_user(user)
+            flash(f"user: {user.name}")
+            return redirect(url_for('home'))
+
+    return render_template('login.html',
+                           form=form)
+
+
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        if request.method == 'POST':
+
+            # check if user in db
+            if Users.query.filter_by(email=request.form.get('email')).first():
+                flash("You've already singed up with that email, log in instead.")
+                return redirect(url_for('login'))
+
+            # create new user
+            hash_pdw = request.form.get('password')
+            hash_pdw = generate_password_hash(hash_pdw,
+                                              method='pbkdf2:sha256',
+                                              salt_length=8)
+
+            new_user = Users(
+                email=request.form.get('email'),
+                password=hash_pdw,
+                name=request.form.get('name')
+            )
+            db.session.add(new_user)
+            db.session.commit()
+
+            login_user(new_user)
+            return redirect(url_for('home'))
+
+    return render_template('register.html',
+                           form=form)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
 
 @app.route('/about')
 def about():
