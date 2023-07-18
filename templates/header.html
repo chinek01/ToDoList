@@ -6,3 +6,31 @@
     <link rel="stylesheet" href="static/styles/style.css">
 </head>
 <body>
+
+<div class="top_row">
+
+    <div class="col left">
+        <div class="logo">
+            <a href="{{ url_for('home') }}">
+        <!--        <img src="static/img/logo.png">-->
+                <img src="../static/img/logo.png">
+            </a>
+        </div>
+    </div>
+
+    <div class="col right" >
+        <div class="topnav">
+            <a class="active" href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            {% if not current_user.is_authenticated: %}
+            <a href="{{ url_for('register') }}">Register</a>
+            {% else: %}
+            <a href="{{ url_for('logout') }}"></a>
+            {% endif %}
+            <a href="{{ url_for('contact') }}"></a>
+        </div>
+    </div>
+
+</div>
+<br><br>
