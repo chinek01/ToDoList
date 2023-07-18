@@ -1,0 +1,61 @@
+{% include "header.html" %}
+
+
+<div class="top_row">
+
+    <div class="col left">
+        <div class="logo">
+            <a href="{{ url_for('home') }}">
+        <!--        <img src="static/img/logo.png">-->
+                <img src="../static/img/logo.png">
+            </a>
+        </div>
+    </div>
+
+    <div class="col right" >
+        <div class="topnav">
+          <a class="active" href="{{ url_for('home') }}">Home</a>
+          <a href="{{ url_for('about') }}">About</a>
+          <a href="{{ url_for('login') }}">Login</a>
+        </div>
+    </div>
+
+</div>
+<br><br>
+<div class="container">
+
+    <div class="col left">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <br>
+            Semper feugiat nibh sed pulvinar proin gravida. Mi eget mauris pharetra et ultrices neque. Aliquam eleifend mi in nulla posuere sollicitudin.
+        </p>
+    </div>
+
+    <div class="col right">
+<!--        <img src="static/img/todo_img01.jpg">        -->
+        <img src="../static/img/todo_img01.jpg" alt="todo img 01">
+    </div>
+
+</div>
+
+<br><br>
+<div class="container">
+
+    <div class="col left">
+<!--        <img src="static/img/todo_img02.jpeg" alt="todo img 02">-->
+        <img src="../static/img/todo_img02.jpeg" alt="todo img 02">
+    </div>
+
+    <div class="col right">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <br>
+            Semper feugiat nibh sed pulvinar proin gravida. Mi eget mauris pharetra et ultrices neque. Aliquam eleifend mi in nulla posuere sollicitudin.
+        </p>
+    </div>
+
+
+</div>
+
+{% include "footer.html" %}
