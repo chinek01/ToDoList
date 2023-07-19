@@ -108,9 +108,22 @@ def login():
                            current_user=current_user)
 
 
-@app.route('/show_task')
-def show_task():
-    return render_template('show_task.html')
+@app.route('/show_task?<int:task_id>')
+def show_task(task_id):
+    all_status = Status.query.all()
+
+    request_task = ToDoList.query.get(task_id)
+
+    return render_template('show_task.html',
+                           all_status=all_status,
+                           task=request_task,
+                           current_user=current_user)
+
+
+@app.route('/edit_task?<int:task_id>')
+def edit_task(task_id):
+    return render_template('about.html',
+                           current_user=current_user)
 
 
 @app.route('/tasks')

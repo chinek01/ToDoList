@@ -21,6 +21,7 @@
         {% for task in all_tasks %}
         <div class="task-preview">
           <a href="{{ url_for('show_task', task_id=task.id) }}">
+<!--          <a href="{{ url_for('about', task_id=task.id) }}">-->
             <h3 class="task-title">
               {{task.name}}
             </h3>
@@ -31,14 +32,6 @@
         </div>
         <hr>
         {% endfor %}
-
-
-        <!-- New Post -->
-        {% if current_user.id == 1: %}
-        <div class="clearfix">
-          <a class="btn btn-primary float-right" href="{{url_for('add_new_post')}}">Create New Post</a>
-        </div>
-        {% endif %}
 
       </div>
     </div>

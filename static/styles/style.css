@@ -84,6 +84,10 @@ a {
     text-decoration: none;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
 .container {
     margin-top: 30px;
     justify-items: center;
@@ -113,3 +117,18 @@ footer{
     text-decoration: None;
 }
 
+.status_select{
+    background-color: #717171;
+    color: #f2f2f2;
+}
+
+.a_btn {
+    color: #f2f2f2;
+    border: 1px black solid;
+    padding: 10px 20px 10px 20px;
+    background-color: #313131;
+}
+
+.a_btn:hover {
+    background-color: #acacac;
+}

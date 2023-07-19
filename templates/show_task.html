@@ -4,15 +4,54 @@
 {% block content %}
 {% include "header.html" %}
 
-
 <div class="container">
 
   <p>
     <h3>Show one task:</h3>
   </p>
 
+  <h2>Task name: {{ task.name }}</h2>
+
+  <div class="container">
+    <div class="col left">
+      Task Status: &nbsp; &nbsp;
+      <select class="status_select">
+        {% for s in all_status %}
+          <option value="{{ s.id }}">{{ s.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col right">
+      <a href="" class="a_btn">Status change - not work yet</a>
+    </div>
+  </div>
+  <hr>
+  <p>
+    Task description:
+    <br>
+    {{ task.description }}
+  </p>
+
+  <br>
+  <hr>
+
+  <div class="container">
+    <div class="col left">
+      Start date: {{ task.start_date }}
+    </div>
+    <div class="col right">
+      End date: {{ task.end_date }}
+    </div>
+  </div>
+
 </div>
 
+<!-- edit task -->
+<div class="container">
+  <a href="{{ url_for('edit_task', task_id=task.id) }}" class="a_btn">Edit task</a>
+</div>
+
+<br><br>
 
 {% include "footer.html" %}
 {% endblock %}
