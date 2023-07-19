@@ -78,7 +78,8 @@ class User_Task(db.Model):
 @app.route("/")
 def home():
     # return render_template("index.html")
-    return render_template("home.html")
+    return render_template("home.html",
+                           current_user=current_user)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -91,9 +92,6 @@ def login():
         password = request.form.get("password")
 
         user = Users.query.filter_by(email=email).first()
-
-        # if not user:
-        #     flash("Tha")
         if not user:
             flash("That email does not exist, pleas try again. ")
             return redirect(url_for('register'))
@@ -106,7 +104,26 @@ def login():
             return redirect(url_for('home'))
 
     return render_template('login.html',
-                           form=form)
+                           form=form,
+                           current_user=current_user)
+
+
+@app.route('/show_task')
+def show_task():
+    return render_template('show_task.html')
+
+
+@app.route('/tasks')
+def tasks():
+
+    all_tasks = ToDoList.query.all()
+
+    all_status = Status.query.all()
+
+    return render_template('tasks.html',
+                           all_tasks=all_tasks,
+                           all_status=all_status,
+                           current_user=current_user)
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -139,7 +156,8 @@ def register():
             return redirect(url_for('home'))
 
     return render_template('register.html',
-                           form=form)
+                           form=form,
+                           current_user=current_user)
 
 
 @app.route('/logout')
@@ -150,12 +168,14 @@ def logout():
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('about.html',
+                           current_user=current_user)
 
 
 @app.route('/contact')
 def contact():
-    return render_template('contact.html')
+    return render_template('contact.html',
+                           current_user=current_user)
 
 
 if __name__ == '__main__':

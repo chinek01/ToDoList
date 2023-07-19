@@ -102,3 +102,14 @@ footer{
     width: 100%;
     text-align: center;
 }
+
+.task-title{
+    color: #999999;
+    text-decoration: None;
+}
+
+.task-subtitle{
+    color: white;
+    text-decoration: None;
+}
+
