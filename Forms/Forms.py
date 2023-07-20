@@ -35,3 +35,4 @@ class NewTask(FlaskForm):
     description = StringField("Description: ", validators=[DataRequired()])
     start_date = DateField("Start date: ", validators=[DataRequired()])
     end_date = DateField("End date:", validators=[DataRequired()])
+    submit = SubmitField("Add new task")

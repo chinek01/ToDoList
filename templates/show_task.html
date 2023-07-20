@@ -15,15 +15,25 @@
   <div class="container">
     <div class="col left">
       Task Status: &nbsp; &nbsp;
-      <select class="status_select">
-        {% for s in all_status %}
+<!--      old -->
+<!--      <select class="status_select" name="s_status">-->
+<!--        {% for s in all_status %}-->
+<!--          <option value="{{ s.id }}">{{ s.name }}</option>-->
+<!--        {% endfor %}-->
+<!--      </select>-->
+<!--    </div>-->
+<!--    <div class="col right">-->
+<!--      <a href="" class="a_btn">Status change - not work yet</a>-->
+<!--    </div>-->
+<!--      new test -->
+      <form method="post" action="/cts">
+        <select class="status_select" name="s_status">
+          {% for s in all_status %}
           <option value="{{ s.id }}">{{ s.name }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="col right">
-      <a href="" class="a_btn">Status change - not work yet</a>
-    </div>
+          {% endfor %}
+        </select>
+        <input type="submit" class="a_btn" value="Status change - not work yet">
+      </form>
   </div>
   <hr>
   <p>

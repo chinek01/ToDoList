@@ -108,8 +108,70 @@ def login():
                            current_user=current_user)
 
 
+@app.route('/new_task', methods=['POST', 'GET'])
+def new_task():
+    form = NewTask()
+
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            add_new_task = ToDoList(
+                id_status=0,
+                name=request.form.get('name'),
+                description=request.form.get('description'),
+                start_date=request.form.get('start_date').__str__(),
+                end_date=request.form.get('end_date').__str__()
+            )
+            db.session.add(add_new_task)
+            db.session.commit()
+            return redirect(url_for('tasks'))
+
+    return render_template('new_task.html',
+                           form=form,
+                           current_user=current_user)
+
+
+cts_status = 0
+
+
+@app.route('/cts', methods=['POST'])
+def cts():
+    global cts_status
+    cts_status = int(request.form.get('s_status')) - 1
+
+    print(type(cts_status))
+
+    all_status = Status.query.all()
+    request_task = ToDoList.query.get(g_task_id)
+
+    request_task.id_status = cts_status
+    db.session.commit()
+
+    return render_template('show_task.html',
+                           all_status=all_status,
+                           task=request_task,
+                           current_user=current_user)
+
+
+# @app.route('/cts?<int:task_id>', methods=['POST'])
+# def cts(task_id, status_id):
+#
+#     all_status = Status.query.all()
+#     request_task = ToDoList.querey.get(task_id)
+#
+#     return render_template('show_task.html',
+#                            all_status=all_status,
+#                            tasks=request_task,
+#                            current_user=current_user)
+
+
+g_task_id = 0
+
+
 @app.route('/show_task?<int:task_id>')
 def show_task(task_id):
+    global g_task_id
+    g_task_id = task_id
+
     all_status = Status.query.all()
 
     request_task = ToDoList.query.get(task_id)
