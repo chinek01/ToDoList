@@ -18,7 +18,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-
+from datetime import datetime
 
 from Forms.Forms import *
 
@@ -63,7 +63,7 @@ class ToDoList(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_status = db.Column(db.Integer)
     name = db.Column(db.String(100))
-    description = db.Column(db.String(1000))
+    description = db.Column(db.Text, nullable=False)
     start_date = db.Column(db.String(12))
     end_date = db.Column(db.String(12))
 
@@ -110,7 +110,7 @@ def login():
 
 @app.route('/new_task', methods=['POST', 'GET'])
 def new_task():
-    form = NewTask()
+    form = NewTaskForm()
 
     if form.validate_on_submit():
         if request.method == 'POST':
@@ -152,18 +152,6 @@ def cts():
                            current_user=current_user)
 
 
-# @app.route('/cts?<int:task_id>', methods=['POST'])
-# def cts(task_id, status_id):
-#
-#     all_status = Status.query.all()
-#     request_task = ToDoList.querey.get(task_id)
-#
-#     return render_template('show_task.html',
-#                            all_status=all_status,
-#                            tasks=request_task,
-#                            current_user=current_user)
-
-
 g_task_id = 0
 
 
@@ -182,9 +170,39 @@ def show_task(task_id):
                            current_user=current_user)
 
 
-@app.route('/edit_task?<int:task_id>')
+@app.route('/edit_task?<int:task_id>', methods=['POST', 'GET'])
 def edit_task(task_id):
-    return render_template('about.html',
+    all_status = Status.query.all()
+    task = ToDoList.query.get(task_id)
+
+    edit_form = NewTaskForm(
+        id_status=task.id_status,
+        name=task.name,
+        description=task.description,
+        start_date=datetime.strptime(task.start_date, '%Y-%m-%d').date(),
+        end_date=datetime.strptime(task.end_date, '%Y-%m-%d').date()
+    )
+
+    if edit_form.validate_on_submit():
+        if request.method == 'POST':
+
+            task.name = request.form.get('name')
+            task.description = request.form.get('description')
+            task.start_date = request.form.get('start_date').__str__()
+            task.end_date = request.form.get('end_date').__str__()
+
+            # task.name = edit_form.name.data
+            # task.description = edit_form.description.data
+            # task.start_date = edit_form.start_date.data
+            # task.end_date = edit_form.end_date.data
+
+            db.session.commit()
+
+            return redirect(url_for('tasks'))
+
+    return render_template('edit_task.html',
+                           all_status=all_status,
+                           form=edit_form,
                            current_user=current_user)
 
 

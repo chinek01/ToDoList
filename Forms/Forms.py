@@ -30,9 +30,9 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login")
 
 
-class NewTask(FlaskForm):
+class NewTaskForm(FlaskForm):
     name = StringField("Name: ", validators=[DataRequired()])
     description = StringField("Description: ", validators=[DataRequired()])
     start_date = DateField("Start date: ", validators=[DataRequired()])
     end_date = DateField("End date:", validators=[DataRequired()])
-    submit = SubmitField("Add new task")
+    submit = SubmitField("Submit")
