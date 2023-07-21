@@ -138,8 +138,6 @@ def cts():
     global cts_status
     cts_status = int(request.form.get('s_status')) - 1
 
-    print(type(cts_status))
-
     all_status = Status.query.all()
     request_task = ToDoList.query.get(g_task_id)
 
@@ -150,6 +148,29 @@ def cts():
                            all_status=all_status,
                            task=request_task,
                            current_user=current_user)
+
+
+@app.route('/ctts', methods=['POST'])
+def ctts():
+    s_status = int(request.form.get('s_status'))
+    all_status = Status.query.all()
+
+    # all_tasks = None
+
+    if s_status != -1:
+
+        # all_tasks = ToDoList.query.get(id_status=int(request.form.get('s_status')) - 1)
+        all_tasks = ToDoList.query.filter_by(id_status=s_status - 1)
+
+    else:
+
+        all_tasks = ToDoList.query.all()
+
+    return render_template('tasks.html',
+                           all_tasks=all_tasks,
+                           all_status=all_status,
+                           current_user=current_user)
+
 
 
 g_task_id = 0

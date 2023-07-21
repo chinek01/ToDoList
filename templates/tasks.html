@@ -7,15 +7,27 @@
 
 <div class="container">
 
-  <div class="col left">
     <h3>Tasks:</h3>
-  </div>
 
-    <div class="col right">
+    <div class="col left">
         <a href="{{ url_for('new_task') }}" class="a_btn">New task</a>
     </div>
 
+    <div class="col right">
+        Filtr Status: &nbsp; &nbsp;
+        <form method="post" action="/ctts">
+            <select class="status_select" name="s_status">
+                <option value="-1">All</option>
+                {% for s in all_status %}
+                <option value="{{ s.id }}">{{ s.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" class="a_btn" value="Use filter" />
+        </form>
+    </div>
 </div>
+
+<hr>
 
   <!-- Main Content -->
 <div class="container">
